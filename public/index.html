@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Redis + BullMQ · Document pipeline</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">A small background-worker demo</p>
+      <h1>One file.<br>Four hand-offs.</h1>
+      <p class="intro">The request ends. The workers keep going. Follow a simulated document through Redis, BullMQ, and MongoDB.</p>
+      <a href="/queues" target="_blank" rel="noopener noreferrer">Open the queue dashboard ↗</a>
+    </header>
+    <section class="pipeline" aria-label="Pipeline stages">
+      <div><span>01</span><strong>object-create</strong><small>Mock document identity</small></div>
+      <div><span>02</span><strong>s3-upload</strong><small>Mock file transfer</small></div>
+      <div><span>03</span><strong>ingest</strong><small>Mock processing result</small></div>
+      <div><span>04</span><strong>quota</strong><small>Real MongoDB update</small></div>
+    </section>
+    <section class="controls" aria-label="Simulate a file event">
+      <div><h2>Send a file into the queue</h2><p>No actual file is uploaded. The form creates a simulated drive event.</p></div>
+      <form id="submit-file">
+        <label>Filename<input id="file-name" name="fileName" value="project-notes.pdf" maxlength="120" required></label>
+        <label>Mock pages<input id="pages" name="pages" type="number" min="1" max="500" value="12" required></label>
+        <label class="checkbox"><input id="failure" type="checkbox"> Fail at object creation</label>
+        <button type="submit" id="submit">Simulate new document →</button>
+      </form>
+      <p id="message" role="status" aria-live="polite"></p>
+    </section>
+    <section aria-labelledby="runs-title">
+      <div class="section-heading"><h2 id="runs-title">Recent runs</h2><p><strong id="pages-used">—</strong> pages accounted for</p></div>
+      <p id="connection" role="status"></p>
+      <div id="runs"><p class="empty">Loading local runs…</p></div>
+    </section>
+    <footer>
+      <p><strong>Try this:</strong> stop the worker terminal, submit a document, then restart the workers. The waiting job is picked up without keeping this tab open.</p>
+      <p>Teaching demo only. No real OneDrive, S3, or Python connection. No quota admission check. Services bind to localhost.</p>
+    </footer>
+  </main>
+</body>
+</html>
